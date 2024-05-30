@@ -58,8 +58,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const excelDateToJSDate = (excelDate) => {
-    const excelEpoch = new Date(Date.UTC(1899, 11, 30)); // Excel starts counting from 1900-01-01, but there's an off-by-one error in Excel's leap year calculation.
-    const jsDate = new Date(excelEpoch.getTime() + excelDate * 86400000); // Convert days to milliseconds
+    const excelEpoch = new Date(Date.UTC(1899, 11, 30)); 
+    const jsDate = new Date(excelEpoch.getTime() + excelDate * 86400000); 
     return jsDate;
   };
 
@@ -73,19 +73,19 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       header: 1,
     });
 
-    // Extract headers from the first row of Excel sheet
+    
     const headers = jsonData.shift();
 
-    // Ensure each header is a string before manipulating
+
     const cleanHeaders = headers.map((header) => {
       if (typeof header === "string") {
         return header.trim().replace(/[^a-zA-Z0-9_]/g, "");
       } else {
-        return header; // Return as it is if not a string
+        return header; 
       }
     });
 
-    // Parse dates in the jsonData
+
     const parsedData = jsonData.map((row) => {
       const rowData = Object.fromEntries(
         row.map((value, index) => [cleanHeaders[index], value])
