@@ -12,6 +12,11 @@ const FileUpload = () => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const handleUpload = async () => {
+        if (!file) {
+            alert('Please select a file first');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('file', file);
 
@@ -24,6 +29,7 @@ const FileUpload = () => {
             alert('File uploaded successfully');
         } catch (error) {
             console.error('There was an error uploading the file!', error);
+            alert('There was an error uploading the file');
         }
     };
 
@@ -33,7 +39,14 @@ const FileUpload = () => {
                 <input {...getInputProps()} />
                 <p>Drag 'n' drop some files here, or click to select files</p>
             </div>
-            <button onClick={handleUpload}>Upload</button>
+            {file && (
+                <div style={{ marginTop: '10px' }}>
+                    <strong>Selected file:</strong> {file.name}
+                </div>
+            )}
+            <button onClick={handleUpload} style={{ marginTop: '10px' }}>
+                Upload
+            </button>
         </div>
     );
 };
